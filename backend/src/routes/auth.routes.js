@@ -1,5 +1,6 @@
 import express from "express"
 import { register, loginUser, logout, me, updateAvatar } from "../controller/authController.js"
+import config from '../config/env.config.js';
 
 
 const router = express.Router()
@@ -33,7 +34,8 @@ router.get('/google/callback',
 
         res.cookie("accessToken", token, cookieparser);
         // Redirect to frontend
-        res.redirect('http://localhost:5173');
+        // Redirect to frontend
+        res.redirect(config.frontendUrl);
     });
 
 export default router

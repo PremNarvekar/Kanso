@@ -1,5 +1,6 @@
 // importing packages
 import express from "express"
+import config from './src/config/env.config.js'
 import nanoid from "nano-id"
 import dotenv from "dotenv"
 
@@ -34,7 +35,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 app.use(passport.initialize())
 // Allow CORS from frontend for cookies
-app.use(cors({ origin: "http://localhost:5173", credentials: true }))
+app.use(cors({ origin: config.frontendUrl, credentials: true }))
 app.use(attachUser)
 
 app.use(express.static(path.join(__dirname, "./public")))

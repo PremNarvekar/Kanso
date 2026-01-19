@@ -2,16 +2,18 @@ import { createShortUrlwithoutUser, createShortUrlwithUser } from "../service/sh
 import { getShortUrl } from "../dao/short_url.js"
 import wrapAsync from "../utils/tryCatchWrapper.js"
 import { getUrlsByUser } from "../dao/short_url.js"
+import config from "../config/env.config.js"
 
 export const createShortUrl = wrapAsync(async (req, res) => {
     const data = req.body
-    let shortUrl 
-    if(req.user){
-       shortUrl = await createShortUrlwithUser(data.url,req.user._id,data.slug)
-    }else{
-       shortUrl = await createShortUrlwithoutUser(data.url)
+    let shortUrl
+    if (req.user) {
+        shortUrl = await createShortUrlwithUser(data.url, req.user._id, data.slug)
+    } else {
+        shortUrl = await createShortUrlwithoutUser(data.url)
     }
-    res.status(200).json({shortUrl: process.env.APP_URL + shortUrl})
+    // Use APP_URL from environment config
+    res.status(200).json({ shortUrl: config.appUrl + shortUrl })
 })
 
 export const getUserHistory = wrapAsync(async (req, res) => {
@@ -24,7 +26,7 @@ export const getUserHistory = wrapAsync(async (req, res) => {
 export const redirectFromShortUrl = wrapAsync(async (req, res) => {
     const { id } = req.params
     const url = await getShortUrl(id)
-    if(!url) throw new Error("Short url not found")
+    if (!url) throw new Error("Short url not found")
     res.redirect(url.full_url)
 
 })
@@ -32,7 +34,7 @@ export const redirectFromShortUrl = wrapAsync(async (req, res) => {
 export const createCustomShortUrl = wrapAsync(async (req, res) => {
     const { url, slug } = req.body
     const shortUrl = await createShortUrlWithoutUser(url, customUrl)
-    res.status(200).json({ shortUrl: process.env.APP_URL + shortUrl })
+    res.status(200).json({ shortUrl: config.appUrl + shortUrl })
 
 })
 
