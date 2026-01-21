@@ -1,6 +1,7 @@
 import { genrateNanoId } from "../utils/helper.js"
 import urlSchema from "../model/shorturl.model.js"
 import { saveShortUrl, getCustomShortUrl, findUrlByFullUrl } from "../dao/short_url.js"
+import { ConflictError } from "../utils/Error.handling.js"
 
 
 export const createShortUrlwithoutUser = async (url) => {
@@ -18,7 +19,7 @@ export const createShortUrlwithUser = async (url, userId, slug = null) => {
     // If user requests a custom slug, try to use it (don't deduplicate against existing random ones)
     if (slug) {
         const exists = await getCustomShortUrl(slug)
-        if (exists) throw new Error("This is custom url alredy exists")
+        if (exists) throw new ConflictError("This custom url already exists")
 
         await saveShortUrl(slug, url, userId)
         return slug
