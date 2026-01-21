@@ -17,10 +17,10 @@ export const saveShortUrl = async (shortUrl, longurl, userId) => {
         await newUrl.save()
 
     } catch (err) {
-        if(err.code == 11000){
+        if (err.code == 11000) {
             throw new ConflictError("Short Url alredy exists ")
         }
-       
+
         throw new Error(err)
 
     }
@@ -28,12 +28,12 @@ export const saveShortUrl = async (shortUrl, longurl, userId) => {
 
 
 export const getShortUrl = async (shortUrl) => {
-    return await urlSchema.findOneAndUpdate({short_url:shortUrl},{$inc:{clicks:1}});
+    return await urlSchema.findOneAndUpdate({ short_url: shortUrl }, { $inc: { clicks: 1 } });
 }
 
-export const getCustomShortUrl = async (slug) =>{
-    return await urlSchema.findOne({short_url:slug})
-    
+export const getCustomShortUrl = async (slug) => {
+    return await urlSchema.findOne({ short_url: slug })
+
 }
 
 export const getUrlsByUser = async (userId) => {
