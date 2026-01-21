@@ -19,7 +19,13 @@ export const createShortUrlwithUser = async (url, userId, slug = null) => {
     // If user requests a custom slug, try to use it (don't deduplicate against existing random ones)
     if (slug) {
         const exists = await getCustomShortUrl(slug)
-        if (exists) throw new ConflictError("This custom url already exists")
+        if (exists) {
+            // If the custom slug already exists and points to the SAME url, return it (idempotency)
+            if (exists.full_url === url) {
+                return slug
+            }
+            throw new ConflictError("This custom url already exists")
+        }
 
         await saveShortUrl(slug, url, userId)
         return slug
