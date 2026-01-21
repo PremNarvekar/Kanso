@@ -39,3 +39,7 @@ export const getCustomShortUrl = async (slug) => {
 export const getUrlsByUser = async (userId) => {
     return await urlSchema.find({ user: userId }).sort({ createdAt: -1 })
 }
+
+export const findUrlByFullUrl = async (fullUrl) => {
+    return await urlSchema.findOne({ full_url: fullUrl })
+}
