@@ -3,7 +3,7 @@
 
 export const config = {
     // Base URL for generated short links - uses Render production URL as default
-    appUrl: process.env.APP_URL || 'https://url-shortner-x857.onrender.com/',
+    appUrl: process.env.RENDER_EXTERNAL_URL || process.env.APP_URL || 'https://url-shortner-x857.onrender.com/',
 
     // JWT configuration
     jwtSecret: process.env.JWT_SECRET || 'default-dev-secret',
